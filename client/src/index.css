@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --primary: #ffcc2a;
+  --accent: #fba733;
+  --text: #4d4d4d;
+  --gray: #e6e6e6;
+  --white: #f4f4f4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.wrapper {
+  width: 90%;
+  margin: auto;
+}
+
+.btn {
+  padding: 0.3rem 1rem;
+  outline: 0;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--text);
+  border-radius: 4px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+  transition: all ease-in-out 0.3s;
+}
+
+.btn-large {
+  padding: 0.5rem 1.5rem;
+}
+
+.btn:hover,
+.btn:focus {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+.btn-black {
+  background: var(--text);
+  color: var(--gray);
+  transition: all ease-in-out 0.3s;
+}
+
+.btn-black:hover,
+.btn-black:focus {
+  background: transparent;
+  color: var(--text);
+  border: 2px solid var(--text);
+}
+
+.navbar {
+  background: var(--primary);
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray);
+  height: calc(100vh - 70px);
+}
+
+.dropbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  outline: 2px dashed var(--text);
+  border-radius: 4px;
+  background: var(--white);
+}
+
+.dropbox p {
+  font-size: 0.8rem;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.dropbox .title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.dropbox .file-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-block: 10px;
+}
+
+.dropbox .file-status-container .csv-icon {
+  aspect-ratio: 1 / 1;
+  height: 20px;
+}
