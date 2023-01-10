@@ -32,10 +32,9 @@ app.post(
     const { file } = req.files;
     const filepath = path.join(__dirname, "Data", "Data.csv");
     file.mv(filepath, (err) => {
-      if (err) return res.status(500).json({ status: "error", message: err });
+      if (err) return res.json({ status: "error", message: err });
+      else return res.json({ message: `${file.name} Uploaded Successfully!` });
     });
-
-    return res.json({ status: "success", message: file.name });
   }
 );
 
@@ -77,32 +76,46 @@ app.get("/convert", async (req, res) => {
   const filePath = "./Data/Data.csv";
   const jsonData = await csv().fromFile(filePath);
   const chunks = chunk(jsonData, 5);
+  const files = [];
 
-  chunks.forEach((chunk) => {
-    chunk.map((data) => {
+  let file_count = 0;
+  for await (const chunk of chunks) {
+    for await (const data of chunk) {
       const fileName = `${data.global_id}_${data.first_name}_${data.last_name}.pdf`;
-      ConvertToPDF(data.url, fileName);
-    });
-  });
+      try {
+        await ConvertToPDF(data.url, fileName);
+        file_count++;
+      } catch (err) {
+        file_count = 0;
+        console.log(err);
+      }
+    }
+  }
 
-  return res.json({
-    status: "success",
-    message: "Converted to PDFs Successfully!",
-  });
+  if (jsonData.length === file_count)
+    return res.send({
+      status: "success",
+      message: "File Converted Successfully!",
+    });
+  else
+    return res.send({
+      status: "error",
+      message: "Try Again Later!",
+    });
 });
 
 app.get("/download", (req, res) => {
-  // const toZip = fs.readdirSync(__dirname + "/" + "PDFs");
-  // const zip = new admz();
+  const toZip = fs.readdirSync(__dirname + "/" + "PDFs");
+  const zip = new admz();
 
-  // toZip.forEach((file) => {
-  //   zip.addLocalFile(__dirname + "/" + "PDFs" + "/" + file);
-  // });
+  toZip.forEach((file) => {
+    zip.addLocalFile(__dirname + "/" + "PDFs" + "/" + file);
+  });
 
-  // const fileName = "Results.zip";
-  // zip.writeZip(__dirname + "/" + "zip" + "/" + fileName, (err) => {
-  //   if (err) console.log(err);
-  // });
+  const fileName = "Results.zip";
+  zip.writeZip(__dirname + "/" + "zip" + "/" + fileName, (err) => {
+    if (err) console.log(err);
+  });
 
   res.download(`./zip/Results.zip`);
 });
