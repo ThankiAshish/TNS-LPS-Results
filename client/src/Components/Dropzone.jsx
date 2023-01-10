@@ -27,7 +27,11 @@ const Dropzone = () => {
       body: formData,
     });
 
-    console.log(response);
+    if (response.status === 200) {
+      toast.success(`${file.name} Uploaded Successfully!`);
+    } else {
+      toast.error("Something Went Wrong!");
+    }
   };
 
   const handleRequest = (e) => {
@@ -36,12 +40,21 @@ const Dropzone = () => {
       method: "GET",
     });
 
-    console.log(response);
+    if (response.status === 200) {
+      toast.success("Converted to PDF Successfully!");
+    } else {
+      toast.error("Something Went Wrong!");
+    }
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    window.open("http://localhost:5000/download");
   };
 
   return (
     <div className="dropzone">
-      <ToastContainer />
+      <ToastContainer theme="light" />
       <div className="dropbox">
         <p className="title">Upload .CSV File Here</p>
         <div className="upload-file-container">
@@ -73,6 +86,9 @@ const Dropzone = () => {
         </button>
         <button type="button" onClick={(e) => handleRequest(e)}>
           Convert
+        </button>
+        <button type="button" onClick={(e) => handleDownload(e)}>
+          Download
         </button>
       </div>
     </div>

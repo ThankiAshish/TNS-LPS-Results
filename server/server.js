@@ -5,6 +5,8 @@ import path from "path";
 import puppeteer from "puppeteer";
 import csv from "csvtojson";
 import { fileURLToPath } from "url";
+import fs from "fs";
+import admz from "adm-zip";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +84,27 @@ app.get("/convert", async (req, res) => {
       ConvertToPDF(data.url, fileName);
     });
   });
+
+  return res.json({
+    status: "success",
+    message: "Converted to PDFs Successfully!",
+  });
+});
+
+app.get("/download", (req, res) => {
+  // const toZip = fs.readdirSync(__dirname + "/" + "PDFs");
+  // const zip = new admz();
+
+  // toZip.forEach((file) => {
+  //   zip.addLocalFile(__dirname + "/" + "PDFs" + "/" + file);
+  // });
+
+  // const fileName = "Results.zip";
+  // zip.writeZip(__dirname + "/" + "zip" + "/" + fileName, (err) => {
+  //   if (err) console.log(err);
+  // });
+
+  res.download(`./zip/Results.zip`);
 });
 
 app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
