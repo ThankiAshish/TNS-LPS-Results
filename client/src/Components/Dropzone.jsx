@@ -70,7 +70,10 @@ const Dropzone = () => {
     })
       .then((res) => {
         setIsConverted(true);
-        toast.success("File Downloaded Succesfully!");
+        const handle = window.open("http://localhost:5000/download");
+        if(!handle) {
+          toast.error("Failed to Download, Your Browser is Blocking the Request to Download");
+        }
       })
       .catch((err) => {
         setIsConverted(true);
@@ -113,7 +116,7 @@ const Dropzone = () => {
               Upload
             </button>
           ) : null}
-          {isUploaded ? (
+          {isUploaded && !isConverted ? (
             <button
               type="button"
               className="btn"
