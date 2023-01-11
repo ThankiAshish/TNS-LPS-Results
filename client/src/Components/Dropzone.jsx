@@ -25,7 +25,6 @@ const Dropzone = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    let id = toast.info("Uploading.....", { autoClose: false });
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -35,19 +34,11 @@ const Dropzone = () => {
         body: formData,
       })
         .then((res) => {
-          toast.update(id, {
-            render: `${file.name} Uploaded Successfully!`,
-            type: "success",
-            isLoading: false,
-          });
+          toast.success(`${file.name} Uploaded Successfully!`);
           setIsUploaded(true);
         })
         .catch((err) => {
-          toast.update(id, {
-            render: "Something Went Wrong!",
-            type: "error",
-            isLoading: false,
-          });
+          toast.error("Something Went Wrong!");
           setIsUploaded(false);
         });
     } else {
@@ -57,7 +48,10 @@ const Dropzone = () => {
 
   const handleRequest = (e) => {
     e.preventDefault();
-    let id = toast.info("Converting.....", { autoClose: false });
+    let id = toast.info("Converting.....", {
+      autoClose: false,
+      isLoading: true,
+    });
     if (isUploaded) {
       fetch("/convert")
         .then((res) => {
@@ -66,6 +60,7 @@ const Dropzone = () => {
             render: "Converted to PDFs!",
             type: "success",
             isLoading: false,
+            autoClose: true,
           });
         })
         .catch((err) => {
@@ -73,6 +68,7 @@ const Dropzone = () => {
             render: "Something Went Wrong!",
             type: "error",
             isLoading: false,
+            autoClose: true,
           });
         });
     } else {
@@ -84,6 +80,7 @@ const Dropzone = () => {
     e.preventDefault();
     let id = toast.info("Your Downloading Will Start in a Moment!", {
       autoClose: false,
+      isLoading: true,
     });
     fetch("/download", {
       method: "GET",
@@ -97,12 +94,14 @@ const Dropzone = () => {
               "Failed to Download, Your Browser is Blocking the Request to Download",
             type: "error",
             isLoading: false,
+            autoClose: true,
           });
         } else {
           toast.update(id, {
             render: "Download Started!",
             type: "success",
             isLoading: false,
+            autoClose: true,
           });
         }
       })
@@ -112,6 +111,7 @@ const Dropzone = () => {
           render: "Something Went Wrong!",
           type: "error",
           isLoading: false,
+          autoClose: true,
         });
       });
   };
