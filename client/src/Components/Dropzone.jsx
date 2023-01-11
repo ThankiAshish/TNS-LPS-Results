@@ -25,6 +25,7 @@ const Dropzone = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
+    let id = toast.info("Uploading.....", { autoClose: false });
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -34,11 +35,19 @@ const Dropzone = () => {
         body: formData,
       })
         .then((res) => {
-          toast.success(`${file.name} Uploaded Successfully!`);
+          toast.update(id, {
+            render: `${file.name} Uploaded Successfully!`,
+            type: "success",
+            isLoading: false,
+          });
           setIsUploaded(true);
         })
         .catch((err) => {
-          toast.error("Something Went Wrong!");
+          toast.update(id, {
+            render: "Something Went Wrong!",
+            type: "error",
+            isLoading: false,
+          });
           setIsUploaded(false);
         });
     } else {
@@ -48,14 +57,23 @@ const Dropzone = () => {
 
   const handleRequest = (e) => {
     e.preventDefault();
+    let id = toast.info("Converting.....", { autoClose: false });
     if (isUploaded) {
       fetch("/convert")
         .then((res) => {
           setIsConverted(true);
-          toast.success("Converted to PDFs!");
+          toast.update(id, {
+            render: "Converted to PDFs!",
+            type: "success",
+            isLoading: false,
+          });
         })
         .catch((err) => {
-          toast.error("Something Went Wrong!");
+          toast.update(id, {
+            render: "Something Went Wrong!",
+            type: "error",
+            isLoading: false,
+          });
         });
     } else {
       toast.error("Upload a File First!");
@@ -64,20 +82,37 @@ const Dropzone = () => {
 
   const handleDownload = (e) => {
     e.preventDefault();
-
+    let id = toast.info("Your Downloading Will Start in a Moment!", {
+      autoClose: false,
+    });
     fetch("/download", {
       method: "GET",
     })
       .then((res) => {
         setIsConverted(true);
         const handle = window.open("http://localhost:5000/download");
-        if(!handle) {
-          toast.error("Failed to Download, Your Browser is Blocking the Request to Download");
+        if (!handle) {
+          toast.update(id, {
+            render:
+              "Failed to Download, Your Browser is Blocking the Request to Download",
+            type: "error",
+            isLoading: false,
+          });
+        } else {
+          toast.update(id, {
+            render: "Download Started!",
+            type: "success",
+            isLoading: false,
+          });
         }
       })
       .catch((err) => {
         setIsConverted(true);
-        toast.error(err.body.message);
+        toast.update(id, {
+          render: "Something Went Wrong!",
+          type: "error",
+          isLoading: false,
+        });
       });
   };
 
