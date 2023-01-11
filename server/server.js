@@ -119,24 +119,24 @@ app.get("/download", async (req, res) => {
 
   fs.readdir(__dirname + "/PDfs", async (err, files) => {
     if (err) {
-      throw err;
+      console.log(err);
     } else {
       for await (const file of files) {
         fs.unlink(__dirname + `/PDFs/${file}`, (err) => {
           if (err) {
-            throw err;
+            console.log(err);
           }
         });
       }
     }
   });
 
-  fs.unlink(__dirname + `/Data/Data.csv`, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-  
+  try {
+    fs.unlink(__dirname + "/Data/Data.csv", (err) => {});
+  } catch (err) {
+    console.log(err);
+  }
+
   res.download(`./zip/Results.zip`);
 });
 
