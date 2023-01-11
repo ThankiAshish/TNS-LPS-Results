@@ -19,6 +19,7 @@
 .env.production.local
 /PDFs
 /zip
+/Data
 
 npm-debug.log*
 yarn-debug.log*
