@@ -11,6 +11,7 @@ const Dropzone = () => {
   const [file, setFile] = useState({});
   const [isUploaded, setIsUploaded] = useState(false);
   const [isConverted, setIsConverted] = useState(false);
+  const [conversionInProcess, setConversionInProcess] = useState(false);
 
   const handleSelection = (e) => {
     e.preventDefault();
@@ -48,6 +49,7 @@ const Dropzone = () => {
 
   const handleRequest = (e) => {
     e.preventDefault();
+    setConversionInProcess(true);
     let id = toast.info("Converting.....", {
       autoClose: false,
       isLoading: true,
@@ -151,7 +153,7 @@ const Dropzone = () => {
               Upload
             </button>
           ) : null}
-          {isUploaded && !isConverted ? (
+          {isUploaded && !conversionInProcess ? (
             <button
               type="button"
               className="btn"
