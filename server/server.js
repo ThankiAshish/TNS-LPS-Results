@@ -104,7 +104,7 @@ app.get("/convert", async (req, res) => {
     });
 });
 
-app.get("/download", (req, res) => {
+app.get("/download", async (req, res) => {
   const toZip = fs.readdirSync(__dirname + "/" + "PDFs");
   const zip = new admz();
 
@@ -117,6 +117,26 @@ app.get("/download", (req, res) => {
     if (err) console.log(err);
   });
 
+  fs.readdir(__dirname + "/PDfs", async (err, files) => {
+    if (err) {
+      throw err;
+    } else {
+      for await (const file of files) {
+        fs.unlink(__dirname + `/PDFs/${file}`, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+  });
+
+  fs.unlink(__dirname + `/Data/Data.csv`, (err) => {
+    if (err) {
+      throw err;
+    }
+  });
+  
   res.download(`./zip/Results.zip`);
 });
 
