@@ -111,6 +111,7 @@ app.post("/convert", async (req, res) => {
     filesOk: filesConverted,
     filesNotOk: filesNotConverted,
     totalRows: jsonData.length,
+    scannedRows: file_count,
   });
 });
 

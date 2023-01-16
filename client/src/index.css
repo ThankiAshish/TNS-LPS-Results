@@ -221,6 +221,12 @@ body {
 
 .display-logs-container .arrow_down {
   width: 30px;
+  transition: transform 0.4s ease-in-out;
+}
+
+.display-logs-container .arrow_down:hover,
+.display-logs-container .arrow_down:focus {
+  transform: translateY(5px);
 }
 
 .logs-container {
@@ -230,9 +236,39 @@ body {
 
 .logs-container.show {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100vw;
   height: 100vh;
   transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  width: 50%;
+  min-width: 400px;
+  height: 80%;
+  min-height: 500px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--accent);
+  background: var(--gray);
+  width: 100%;
+}
+
+.status img {
+  aspect-ratio: 1 / 1;
+  width: 25px;
+  transform: rotate(90deg);
 }
