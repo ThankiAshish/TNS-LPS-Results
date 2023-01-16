@@ -30,12 +30,13 @@ const Dropzone = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      fetch("/upload", {
+      await fetch("/upload", {
         method: "POST",
         body: formData,
       })
-        .then((res) => {
-          toast.success(`${file.name} Uploaded Successfully!`);
+        .then(res => res.json())
+        .then(data => {
+          toast.success(`${data.message}`);
           setIsUploaded(true);
         })
         .catch((err) => {
@@ -47,7 +48,7 @@ const Dropzone = () => {
     }
   };
 
-  const handleRequest = (e) => {
+  const handleRequest = async (e) => {
     e.preventDefault();
     setConversionInProcess(true);
     let id = toast.info("Converting.....", {
@@ -55,11 +56,12 @@ const Dropzone = () => {
       isLoading: true,
     });
     if (isUploaded) {
-      fetch("/convert")
-        .then((res) => {
+      await fetch("/convert")
+        .then(res => res.json())
+        .then(data => {
           setIsConverted(true);
           toast.update(id, {
-            render: "Converted to PDFs!",
+            render: data.message,
             type: "success",
             isLoading: false,
             autoClose: true,
