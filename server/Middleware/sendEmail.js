@@ -6,10 +6,11 @@ const html = `
 `;
 
 const FROM_EMAIL = `edak.messenger@gmail.com`
-const EMAIL_PASS = `9723edak`
+const EMAIL_PASS = `yaffypsjpgxrpuih`
 
 const sendEmail = (async (to_mail, fileName, filePath) => {
     const transporter = nodeMailer.createTransport({
+        service: "Gmail",
         host: 'edak.messenger@gmail.com',
         port: 465,
         secure: true,
