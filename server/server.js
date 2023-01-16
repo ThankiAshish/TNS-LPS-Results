@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import path from "path";
@@ -13,10 +14,12 @@ const __dirname = path.dirname(__filename);
 
 import filePayloadExists from "./Middleware/filePayloadExists.js";
 import fileSizeLimiter from "./Middleware/fileSizeLimiter.js";
+import sendEmail from "./Middleware/sendEmail.js";
 
 const PORT = 5000;
 
 const app = express();
+app.use(bodyParser.json())
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -38,7 +41,10 @@ app.post(
   }
 );
 
-app.get("/convert", async (req, res) => {
+app.post("/convert", async (req, res) => {
+  console.log(req.body);
+  const { flag } = req.body;
+
   function chunk(items, size) {
     const chunks = [];
     items = [].concat(...items);
@@ -86,10 +92,11 @@ app.get("/convert", async (req, res) => {
     for await (const data of chunk) {
       const fileName = `${data.global_id}_${data.first_name}_${data.last_name}.pdf`;
       try {
-        // if (req.body.sendEmail) {
-        //   /*TODO*/
-        // }
         await ConvertToPDF(data.url, fileName);
+        if (flag) {
+          const filePath = fs.readFileSync(__dirname + `\\PDFs\\${fileName}`);
+          sendEmail(data.email, fileName, filePath);
+        }
         filesConverted.push(data.global_id);
         file_count++;
       } catch (err) {
