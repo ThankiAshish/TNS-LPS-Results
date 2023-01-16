@@ -12,6 +12,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -152,4 +153,86 @@ body {
 .email-container .email-checkbox-label {
   font-weight: 300;
   font-size: 0.8rem;
+}
+
+.accordion-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.accordion {
+  width: 300px;
+}
+
+.accordion .item {
+  background: var(--accent);
+  margin-bottom: 5px;
+  padding: 10px 20px;
+}
+
+.accordion .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: var(--gray);
+  user-select: none;
+}
+
+.accordion span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.accordion .content {
+  color: var(--text);
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.accordion .content.show {
+  height: auto;
+  max-height: 9999px;
+  transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+.display-logs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.display-logs-container .logs-btn {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--accent);
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.display-logs-container .arrow_down {
+  width: 30px;
+}
+
+.logs-container {
+  display: none;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.logs-container.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  transition: all 0.5s cubic-bezier(1, 0, 1, 0);
 }
