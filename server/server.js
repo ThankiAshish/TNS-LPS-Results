@@ -93,12 +93,12 @@ app.get("/convert", async (req, res) => {
   }
 
   if (jsonData.length === file_count)
-    return res.send({
+    return res.json({
       status: "success",
       message: "File Converted Successfully!",
     });
   else
-    return res.send({
+    return res.json({
       status: "error",
       message: "Try Again Later!",
     });
