@@ -56,6 +56,7 @@ app.get("/convert", async (req, res) => {
     const page = await browser.newPage();
 
     await page.goto(url, { waitUntil: "networkidle2" });
+    // Set timeout
 
     await page.pdf({
       path: `./PDFs/${fileName}`,
@@ -87,36 +88,25 @@ app.get("/convert", async (req, res) => {
       const fileName = `${data.global_id}_${data.first_name}_${data.last_name}.pdf`;
       try {
         await ConvertToPDF(data.url, fileName);
-        if(req.body.sendEmail) {
-          const filePath = fs.readFile(__dirname + `./PDFs/${fileName}`);
+        // if (req.body.sendEmail) {
+        //   const filePath = fs.readFile(__dirname + `./PDFs/${fileName}`);
           sendMail(data.email, fileName, filePath);
-        }
+        // }
         filesConverted.push(data.global_id);
         file_count++;
       } catch (err) {
-        file_count = 0;
         console.log(err);
         filesNotConverted.push(data.global_id);
       }
     }
   }
 
-  if (jsonData.length === file_count) {
-    console.log(filesConverted, "\n\n",filesNotConverted);
-    return res.send({
-      status: "success",
-      message: "File Converted Successfully!",
-      filesOk: filesConverted,
-      filesNotOk: filesNotConverted,
-      totalRows: jsonData.length,  
-    });
-  } 
-  else {
-    return res.send({
-      status: "error",
-      message: "Try Again Later!",
-    });
-  }
+  return res.json({
+    message: `${file_count} Files Converted Successfully!`,
+    filesOk: filesConverted,
+    filesNotOk: filesNotConverted,
+    totalRows: jsonData.length,
+  });
 });
 
 app.get("/download", async (req, res) => {

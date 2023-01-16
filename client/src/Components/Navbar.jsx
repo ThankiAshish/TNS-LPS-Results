@@ -1,11 +1,13 @@
 import React from "react";
+import Logo from "../Assets/logo.png";
 
 const Navbar = () => {
   return (
     <div className="navbar">
       <div className="wrapper">
         <nav>
-          <h1 className="logo">URL to PDF Converter</h1>
+          <img src={Logo} alt="Northstar Logo" className="logo" />
+          <h1>URL to PDF Converter</h1>
         </nav>
       </div>
     </div>
