@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename);
 
 import filePayloadExists from "./Middleware/filePayloadExists.js";
 import fileSizeLimiter from "./Middleware/fileSizeLimiter.js";
+import sendMail from "./Middleware/sendMail.js";
 
 const PORT = 5000;
 
@@ -85,10 +86,11 @@ app.get("/convert", async (req, res) => {
     for await (const data of chunk) {
       const fileName = `${data.global_id}_${data.first_name}_${data.last_name}.pdf`;
       try {
-        if(req.body.sendEmail) {
-          /*TODO*/
-        }
         await ConvertToPDF(data.url, fileName);
+        if(req.body.sendEmail) {
+          const filePath = fs.readFile(__dirname + `./PDFs/${fileName}`);
+          sendMail(data.email, fileName, filePath);
+        }
         filesConverted.push(data.global_id);
         file_count++;
       } catch (err) {
