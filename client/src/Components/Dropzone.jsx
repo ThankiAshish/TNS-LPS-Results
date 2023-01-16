@@ -12,6 +12,12 @@ const Dropzone = () => {
   const [isUploaded, setIsUploaded] = useState(false);
   const [isConverted, setIsConverted] = useState(false);
   const [conversionInProcess, setConversionInProcess] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const checkHandler = (e) => {
+    e.preventDefault();
+    setIsChecked(!isChecked);
+  };
 
   const handleSelection = (e) => {
     e.preventDefault();
@@ -57,6 +63,7 @@ const Dropzone = () => {
     if (isUploaded) {
       fetch("/convert")
         .then((res) => {
+          console.log(res.data.message);
           setIsConverted(true);
           toast.update(id, {
             render: "Converted to PDFs!",
@@ -144,6 +151,19 @@ const Dropzone = () => {
             {fileStatus !== "No File Chosen!" ? file.name : fileStatus}
           </p>
         </div>
+        <div className="email-container">
+          <input
+            type="checkbox"
+            name="sendEmail"
+            id="sendEmail"
+            className="email-checkbox"
+            checked={isChecked}
+            onChange={(e) => checkHandler(e)}
+          />
+          <label htmlFor="sendEmail" className="email-checkbox-label">
+            Send Files to Email?
+          </label>
+        </div>
         <div className="buttons-container">
           {isSelected ? (
             <button
@@ -158,7 +178,7 @@ const Dropzone = () => {
               type="button"
               className="btn"
               onClick={(e) => handleRequest(e)}>
-              Convert
+              Start Process
             </button>
           ) : null}
           {isConverted ? (
