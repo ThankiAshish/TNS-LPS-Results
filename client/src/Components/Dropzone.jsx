@@ -13,7 +13,7 @@ const Dropzone = () => {
   const [isUploaded, setIsUploaded] = useState(false);
   const [isConverted, setIsConverted] = useState(false);
   const [conversionInProcess, setConversionInProcess] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [sendMail, setSendMail] = useState(false);
   const [logs, setLogs] = useState(false);
   const [filesConverted, setFilesConverted] = useState([]);
   const [filesNotConverted, setFilesNotConverted] = useState([]);
@@ -23,9 +23,8 @@ const Dropzone = () => {
     setLogs(!logs);
   };
 
-  const checkHandler = (e) => {
-    e.preventDefault();
-    setIsChecked(!isChecked);
+  const checkHandler = () => {
+    setSendMail(!sendMail);
   };
 
   const handleSelection = (e) => {
@@ -71,7 +70,15 @@ const Dropzone = () => {
       isLoading: true,
     });
     if (isUploaded) {
-      await fetch("/convert")
+      const options = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({flag: sendMail})
+      }
+
+      await fetch("/convert", options)
         .then((res) => res.json())
         .then((data) => {
           setIsConverted(true);
@@ -92,6 +99,7 @@ const Dropzone = () => {
             isLoading: false,
             autoClose: true,
           });
+          console.log(err.message);
         });
     } else {
       toast.error("Upload a File First!");
@@ -171,8 +179,8 @@ const Dropzone = () => {
               name="sendEmail"
               id="sendEmail"
               className="email-checkbox"
-              checked={isChecked}
-              onChange={(e) => checkHandler(e)}
+              checked={sendMail}
+              onChange={() => checkHandler()}
             />
             <label htmlFor="sendEmail" className="email-checkbox-label">
               Send Files to Email?
