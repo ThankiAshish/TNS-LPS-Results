@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import csvIcon from "../Assets/csv_icon.png";
 import downArrow from "../Assets/down_arrow.svg";
+import bar from "../Assets/bar.svg";
 
 const Dropzone = () => {
   const [isSelected, setIsSelected] = useState(false);
@@ -18,13 +19,13 @@ const Dropzone = () => {
   const [filesConverted, setFilesConverted] = useState([]);
   const [filesNotConverted, setFilesNotConverted] = useState([]);
   const [totalRows, setTotalRows] = useState(null);
+  const [scannedRows, setScannedRows] = useState(null);
 
   const toggleLogs = () => {
     setLogs(!logs);
   };
 
-  const checkHandler = (e) => {
-    e.preventDefault();
+  const checkHandler = () => {
     setIsChecked(!isChecked);
   };
 
@@ -78,6 +79,7 @@ const Dropzone = () => {
           setFilesConverted(data.filesOk);
           setFilesNotConverted(data.filesNotOk);
           setTotalRows(data.totalRows);
+          setScannedRows(data.scannedRows);
           toast.update(id, {
             render: data.message,
             type: "success",
@@ -172,7 +174,7 @@ const Dropzone = () => {
               id="sendEmail"
               className="email-checkbox"
               checked={isChecked}
-              onChange={(e) => checkHandler(e)}
+              onChange={() => checkHandler()}
             />
             <label htmlFor="sendEmail" className="email-checkbox-label">
               Send Files to Email?
@@ -207,7 +209,7 @@ const Dropzone = () => {
           <div className="display-logs-container">
             {true ? (
               <>
-                <button className="logs-btn" onClick={toggleLogs}>
+                <button className="logs-btn" onClick={() => toggleLogs()}>
                   See Logs
                 </button>
                 <a href="#logs">
@@ -222,11 +224,26 @@ const Dropzone = () => {
           </div>
         </div>
       </div>
-      <div
-        className={logs ? "logs-container show" : "logs-container"}
-        id="logs">
-        <div>{(filesConverted, filesNotConverted, totalRows)}</div>
-      </div>
+      {logs ? (
+        <div
+          className={logs ? "logs-container show" : "logs-container"}
+          id="logs">
+          <div className="status-container">
+            <div className="status">
+              <p>Files Converted:&nbsp;</p>
+              <p className="success-count">{filesConverted.length}</p>
+              <img src={bar} alt="bar" />
+              <p className="error-count">{filesNotConverted.length}</p>
+            </div>
+            <div className="status">
+              <p>Rows Processed:&nbsp;</p>
+              <p className="success-count">{totalRows}</p>
+              <img src={bar} alt="bar" />
+              <p className="error-count">{scannedRows}</p>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 };
