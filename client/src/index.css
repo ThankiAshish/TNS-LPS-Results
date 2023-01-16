@@ -76,9 +76,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 100px;
+  width: 100%;
   font-size: 1.2rem;
   font-weight: 800;
+}
+
+.navbar nav .logo {
+  width: 6em;
+  align-self: center;
 }
 
 .dropzone {
@@ -87,7 +93,7 @@ body {
   align-items: center;
   justify-content: center;
   background: var(--gray);
-  height: calc(100vh - 70px);
+  height: calc(100vh - 100px);
 }
 
 .dropbox {
@@ -136,4 +142,14 @@ body {
   gap: 10px;
   width: 30%;
   flex-wrap: wrap;
+}
+
+.email-container .email-checkbox {
+  accent-color: var(--accent);
+  margin-right: 5px;
+}
+
+.email-container .email-checkbox-label {
+  font-weight: 300;
+  font-size: 0.8rem;
 }
