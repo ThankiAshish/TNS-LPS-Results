@@ -76,32 +76,45 @@ app.get("/convert", async (req, res) => {
   const filePath = "./Data/Data.csv";
   const jsonData = await csv().fromFile(filePath);
   const chunks = chunk(jsonData, 5);
-  const files = [];
 
   let file_count = 0;
+  let filesConverted = [];
+  let filesNotConverted = [];
+
   for await (const chunk of chunks) {
     for await (const data of chunk) {
       const fileName = `${data.global_id}_${data.first_name}_${data.last_name}.pdf`;
       try {
+        if(req.body.sendEmail) {
+          /*TODO*/
+        }
         await ConvertToPDF(data.url, fileName);
+        filesConverted.push(data.global_id);
         file_count++;
       } catch (err) {
         file_count = 0;
         console.log(err);
+        filesNotConverted.push(data.global_id);
       }
     }
   }
 
-  if (jsonData.length === file_count)
+  if (jsonData.length === file_count) {
+    console.log(filesConverted, "\n\n",filesNotConverted);
     return res.send({
       status: "success",
       message: "File Converted Successfully!",
+      filesOk: filesConverted,
+      filesNotOk: filesNotConverted,
+      totalRows: jsonData.length,  
     });
-  else
+  } 
+  else {
     return res.send({
       status: "error",
       message: "Try Again Later!",
     });
+  }
 });
 
 app.get("/download", async (req, res) => {
@@ -117,7 +130,7 @@ app.get("/download", async (req, res) => {
     if (err) console.log(err);
   });
 
-  fs.readdir(__dirname + "/PDfs", async (err, files) => {
+  fs.readdir(__dirname + "/PDFs", async (err, files) => {
     if (err) {
       console.log(err);
     } else {
