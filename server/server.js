@@ -94,7 +94,7 @@ app.post("/convert", async (req, res) => {
       try {
         await ConvertToPDF(data.url, fileName);
         if (flag) {
-          const filePath = fs.readFileSync(__dirname + `\\PDFs\\${fileName}`);
+          const filePath = __dirname + `\\PDFs\\${fileName}`;
           sendEmail(data.email, fileName, filePath);
         }
         filesConverted.push(data.global_id);
