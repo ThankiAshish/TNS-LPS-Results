@@ -18,8 +18,8 @@ const Dropzone = () => {
   const [filesNotConverted, setFilesNotConverted] = useState([]);
   const [mailsSent, setMailsSent] = useState([]);
   const [mailsNotSent, setMailsNotSent] = useState([]);
-  const [totalRows, setTotalRows] = useState(null);
-  const [scannedRows, setScannedRows] = useState(null);
+  const [totalRows, setTotalRows] = useState(0);
+  const [scannedRows, setScannedRows] = useState(0);
 
   const checkHandler = () => {
     setSendMail(!sendMail);
@@ -71,10 +71,10 @@ const Dropzone = () => {
       const options = {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({flag: sendMail})
-      }
+        body: JSON.stringify({ flag: sendMail }),
+      };
 
       await fetch("/convert", options)
         .then((res) => res.json())
@@ -214,19 +214,19 @@ const Dropzone = () => {
             ) : null}
           </div>
           <div className="display-logs-container">
-            {isConverted ? (
+            {true ? (
               <>
-                <Link className="logs-btn" to={{
-                  pathname: "/logs",
-                  props: {
-                    filesConverted: filesConverted, 
-                    filesNotConverted: filesNotConverted, 
-                    mailsNotSent: mailsNotSent, 
-                    mailsSent: mailsSent, 
-                    totalRows: totalRows, 
-                    scannedRows: scannedRows
-                  }
-                }} >
+                <Link
+                  className="logs-btn"
+                  to="/logs"
+                  state={{
+                    filesConverted: filesConverted,
+                    filesNotConverted: filesNotConverted,
+                    mailsSent: mailsSent,
+                    mailsNotSent: mailsNotSent,
+                    totalRows: totalRows,
+                    scannedRows: scannedRows,
+                  }}>
                   See Logs
                 </Link>
               </>
