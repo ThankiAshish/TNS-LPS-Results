@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
 
 import csvIcon from "../Assets/csv_icon.png";
-import downArrow from "../Assets/down_arrow.svg";
-import bar from "../Assets/bar.svg";
 
 const Dropzone = () => {
   const [isSelected, setIsSelected] = useState(false);
@@ -15,15 +14,12 @@ const Dropzone = () => {
   const [isConverted, setIsConverted] = useState(false);
   const [conversionInProcess, setConversionInProcess] = useState(false);
   const [sendMail, setSendMail] = useState(false);
-  const [logs, setLogs] = useState(false);
   const [filesConverted, setFilesConverted] = useState([]);
   const [filesNotConverted, setFilesNotConverted] = useState([]);
+  const [mailsSent, setMailsSent] = useState([]);
+  const [mailsNotSent, setMailsNotSent] = useState([]);
   const [totalRows, setTotalRows] = useState(null);
   const [scannedRows, setScannedRows] = useState(null);
-
-  const toggleLogs = () => {
-    setLogs(!logs);
-  };
 
   const checkHandler = () => {
     setSendMail(!sendMail);
@@ -88,6 +84,8 @@ const Dropzone = () => {
           setFilesNotConverted(data.filesNotOk);
           setTotalRows(data.totalRows);
           setScannedRows(data.scannedRows);
+          setMailsNotSent(data.mailsNotOk);
+          setMailsSent(data.mailsOk);
           toast.update(id, {
             render: data.message,
             type: "success",
@@ -216,43 +214,26 @@ const Dropzone = () => {
             ) : null}
           </div>
           <div className="display-logs-container">
-            {true ? (
+            {isConverted ? (
               <>
-                <button className="logs-btn" onClick={() => toggleLogs()}>
+                <Link className="logs-btn" to={{
+                  pathname: "/logs",
+                  props: {
+                    filesConverted: filesConverted, 
+                    filesNotConverted: filesNotConverted, 
+                    mailsNotSent: mailsNotSent, 
+                    mailsSent: mailsSent, 
+                    totalRows: totalRows, 
+                    scannedRows: scannedRows
+                  }
+                }} >
                   See Logs
-                </button>
-                <a href="#logs">
-                  <img
-                    src={downArrow}
-                    alt="down-arrow"
-                    className="arrow_down"
-                  />
-                </a>
+                </Link>
               </>
             ) : null}
           </div>
         </div>
       </div>
-      {logs ? (
-        <div
-          className={logs ? "logs-container show" : "logs-container"}
-          id="logs">
-          <div className="status-container">
-            <div className="status">
-              <p>Files Converted:&nbsp;</p>
-              <p className="success-count">{filesConverted.length}</p>
-              <img src={bar} alt="bar" />
-              <p className="error-count">{filesNotConverted.length}</p>
-            </div>
-            <div className="status">
-              <p>Rows Processed:&nbsp;</p>
-              <p className="success-count">{totalRows}</p>
-              <img src={bar} alt="bar" />
-              <p className="error-count">{scannedRows}</p>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 };
