@@ -1,6 +1,7 @@
 import React from "react";
 
-import bar from "../Assets/bar.svg"
+import bar from "../Assets/bar.svg";
+
 
 const Logs = ({props}) => {
     return (
