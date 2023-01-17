@@ -1,5 +1,11 @@
 import nodeMailer from "nodemailer";
 import { google } from "googleapis";
+import dotenv from "dotenv";
+
+dotenv.config({
+    path: "./config/.env",
+});
+
 const OAuth2 = google.auth.OAuth2;
 
 const html = `
@@ -7,12 +13,14 @@ const html = `
     <p>Okay this seems to work</p>
 `;
 
-const FROM_EMAIL = `edak.messenger@gmail.com`
-const EMAIL_PASS = `yaffypsjpgxrpuih`
+const FROM_EMAIL = process.env.FROM_EMAIL;
+const CLIENT_ID = process.env.OAUTH2_API_CLIENT_ID;
+const CLIENT_SECRET = process.env.OAUTH2_API_CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
-const refresh = "1//043XTbWZlSgDACgYIARAAGAQSNwF-L9Ir6-j-Ay9OBE6FQ3uc65F25M8235FzfG8mBcQddZPtBXjF3fSq0iLswZzsKoqEkh19ho8"
-const OAuth2_client = new OAuth2("444760745272-bqs6nemhg9eh6jv96ujjn8aj5s2uft4s.apps.googleusercontent.com", "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");
-OAuth2_client.setCredentials({refresh_token: refresh});
+const OAuth2_client = new OAuth2(CLIENT_ID, CLIENT_SECRET);
+
+OAuth2_client.setCredentials({refresh_token: REFRESH_TOKEN});
 
 const sendEmail = (async (to_mail, fileName, filePath) => {
     const accessToken = OAuth2_client.getAccessToken();
@@ -22,9 +30,9 @@ const sendEmail = (async (to_mail, fileName, filePath) => {
         auth: {
             type: "OAuth2",
             user: FROM_EMAIL,
-            clientId: "444760745272-bqs6nemhg9eh6jv96ujjn8aj5s2uft4s.apps.googleusercontent.com",
-            clientSecret: "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",
-            refreshToken: refresh,
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            refreshToken: REFRESH_TOKEN,
             accessToken: accessToken
         },
         port: 465,
