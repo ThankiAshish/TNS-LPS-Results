@@ -14,12 +14,16 @@ const Dropzone = () => {
   const [isConverted, setIsConverted] = useState(false);
   const [conversionInProcess, setConversionInProcess] = useState(false);
   const [sendMail, setSendMail] = useState(false);
-  const [filesConverted, setFilesConverted] = useState([]);
-  const [filesNotConverted, setFilesNotConverted] = useState([]);
+  const [filesConverted, setFilesConverted] = useState([1, 2, 4]);
+  const [filesNotConverted, setFilesNotConverted] = useState([3, 5]);
   const [mailsSent, setMailsSent] = useState([]);
   const [mailsNotSent, setMailsNotSent] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [scannedRows, setScannedRows] = useState(0);
+
+  const reset = () => {
+    window.location.reload();
+  };
 
   const checkHandler = () => {
     setSendMail(!sendMail);
@@ -94,6 +98,8 @@ const Dropzone = () => {
           });
         })
         .catch((err) => {
+          setIsUploaded(true);
+          setConversionInProcess(false);
           toast.update(id, {
             render: err.message,
             type: "error",
@@ -231,6 +237,9 @@ const Dropzone = () => {
                 </Link>
               </>
             ) : null}
+            <button className="btn btn-danger" onClick={() => reset()}>
+              Reset
+            </button>
           </div>
         </div>
       </div>

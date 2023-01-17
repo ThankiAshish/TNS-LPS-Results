@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 import Collapse from "../Components/Collapse";
 import Navbar from "../Components/Navbar";
 
+import success from "../Assets/success.png";
+import error from "../Assets/error.png";
+
 const Logs = () => {
   const location = useLocation();
   const data = location.state;
@@ -13,19 +16,25 @@ const Logs = () => {
       <Navbar />
       <div className="logs-container">
         <h1 className="header">Logs</h1>
+        <div className="status-icons-container">
+          <div className="status-icons">
+            <img src={success} alt="success-icon" />
+            <img src={error} alt="error-icon" />
+          </div>
+        </div>
         <div className="status-container">
           <Collapse
             title="Files Converted"
-            success={data.filesConverted.length}
-            error={data.filesNotConverted.length}
+            success={data.filesConverted}
+            error={data.filesNotConverted}
           />
           <Collapse
             title="Emails Sent"
-            success={data.mailsSent.length}
-            error={data.mailsNotSent.length}
+            success={data.mailsSent}
+            error={data.mailsNotSent}
           />
           <Collapse
-            title="Total Rows"
+            title="Total Rows Scanned"
             success={data.totalRows}
             error={data.scannedRows}
           />
