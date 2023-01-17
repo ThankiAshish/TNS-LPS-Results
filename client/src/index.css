@@ -217,31 +217,18 @@ body {
   outline: none;
   background: transparent;
   cursor: pointer;
+  text-decoration: none;
 }
 
-.display-logs-container .arrow_down {
-  width: 30px;
-  transition: transform 0.4s ease-in-out;
-}
-
-.display-logs-container .arrow_down:hover,
-.display-logs-container .arrow_down:focus {
-  transform: translateY(5px);
-}
 
 .logs-container {
-  display: none;
-  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
-}
-
-.logs-container.show {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
   height: 100vh;
-  transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+  width: 100vw;
+  overflow: hidden;
 }
 
 .status-container {

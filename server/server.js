@@ -87,6 +87,8 @@ app.post("/convert", async (req, res) => {
   let file_count = 0;
   let filesConverted = [];
   let filesNotConverted = [];
+  let mailsSent = [];
+  let mailsNotSent = [];
 
   for await (const chunk of chunks) {
     for await (const data of chunk) {
@@ -95,7 +97,14 @@ app.post("/convert", async (req, res) => {
         await ConvertToPDF(data.url, fileName);
         if (flag) {
           const filePath = __dirname + `\\PDFs\\${fileName}`;
-          sendEmail(data.email, fileName, filePath);
+          sendEmail(data.email, fileName, filePath)
+          .then(res => {
+            mailsSent.push(data.email + '->' + fileName);
+          }) 
+          .catch(e => {
+            console.log(e);
+            mailsNotSent.push(data.email + '->' + fileName);
+          });
         }
         filesConverted.push(data.global_id);
         file_count++;
@@ -110,6 +119,8 @@ app.post("/convert", async (req, res) => {
     message: `${file_count} Files Converted Successfully!`,
     filesOk: filesConverted,
     filesNotOk: filesNotConverted,
+    mailsOk: mailsSent,
+    mailsNotOk: mailsNotSent,
     totalRows: jsonData.length,
     scannedRows: file_count,
   });
