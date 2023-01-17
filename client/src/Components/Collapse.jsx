@@ -1,31 +1,19 @@
 import React, { useState } from "react";
 
-const Collapse = ({ title, content, array }) => {
+import bar from "../Assets/bar.svg";
+
+const Collapse = ({ title, success, error }) => {
   const [selected, setSelected] = useState(null);
   const toggle = () => {
     setSelected(!selected);
   };
   return (
-    <div className="accordion">
-      <div className="item">
-        <div className="title" onClick={() => toggle()}>
-          <h2>{title}</h2>
-          <span>{selected ? "-" : "+"}</span>
-        </div>
-        <div className={selected ? "content show" : "content"}>
-          {array ? (
-            <>
-              {array.map((item, index) => (
-                <p id={index}>{item}</p>
-              ))}
-            </>
-          ) : null}
-          {content ? (
-            <>
-              <p>{content}</p>
-            </>
-          ) : null}
-        </div>
+    <div className="status">
+      <p className="title">{title}:&nbsp;</p>
+      <div className="content">
+        <p className="success-count">{success}</p>
+        <img src={bar} alt="bar" />
+        <p className="error-count">{error}</p>
       </div>
     </div>
   );
