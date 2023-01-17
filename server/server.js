@@ -14,7 +14,10 @@ const __dirname = path.dirname(__filename);
 
 import filePayloadExists from "./Middleware/filePayloadExists.js";
 import fileSizeLimiter from "./Middleware/fileSizeLimiter.js";
-import sendEmail from "./Middleware/sendEmail.js";
+
+import sendEmail from "./Helpers/sendEmail.js";
+import deleteFile from "./Helpers/deleteFile.js";
+import bulkDelete from "./Helpers/bulkDelete.js";
 
 const PORT = 5000;
 
@@ -24,6 +27,10 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   console.log("API is Running!");
+});
+
+app.get('/_health', (req, res) => {
+  res.status(200).send('ok')
 });
 
 app.post(
@@ -104,6 +111,16 @@ app.post("/convert", async (req, res) => {
           .catch(e => {
             console.log(e);
             mailsNotSent.push(data.email + '->' + fileName);
+            res.json({
+              status: "error",
+              message: "Something Went Wrong!",
+              filesOk: filesConverted,
+              filesNotOk: filesNotConverted,
+              mailsOk: mailsSent,
+              mailsNotOk: mailsNotSent,
+              totalRows: jsonData.length,
+              scannedRows: file_count,
+            })
           });
         }
         filesConverted.push(data.global_id);
@@ -139,27 +156,20 @@ app.get("/download", async (req, res) => {
     if (err) console.log(err);
   });
 
-  fs.readdir(__dirname + "/PDFs", async (err, files) => {
-    if (err) {
-      console.log(err);
-    } else {
-      for await (const file of files) {
-        fs.unlink(__dirname + `/PDFs/${file}`, (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
-      }
-    }
-  });
+  bulkDelete(__dirname, "/PDFs");
+  deleteFile(__dirname, "/Data/Data.csv");
 
-  try {
-    fs.unlink(__dirname + "/Data/Data.csv", (err) => {});
-  } catch (err) {
-    console.log(err);
-  }
-
-  res.download(`./zip/Results.zip`);
+  return res.download(`./zip/Results.zip`);
 });
+
+app.get("/reset", (req, res) => {
+  bulkDelete(__dirname, "/PDFs");
+  deleteFile(__dirname, "/Data/Data.csv");
+  deleteFile(__dirname, "/zip/Results.zip");
+
+  console.log("A Reset was Performed");
+  
+  return res.redirect("http://localhost:3000/");
+})
 
 app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
