@@ -1,31 +1,38 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-import bar from "../Assets/bar.svg"
+import Collapse from "../Components/Collapse";
+import Navbar from "../Components/Navbar";
 
-const Logs = ({props}) => {
-    return (
-    <div className="logs-container">
+const Logs = () => {
+  const location = useLocation();
+  const data = location.state;
+
+  return (
+    <>
+      <Navbar />
+      <div className="logs-container">
+        <h1 className="header">Logs</h1>
         <div className="status-container">
-            <div className="status">
-                <p>Files Converted:&nbsp;</p>
-                <p className="success-count">{props.filesConverted.length}</p>
-                <img src={bar} alt="bar" />
-                <p className="error-count">{props.filesNotConverted.length}</p>
-            </div>
-            <div className="status">
-                <p>Rows Processed:&nbsp;</p>
-                <p className="success-count">{props.totalRows}</p>
-                <img src={bar} alt="bar" />
-                <p className="error-count">{props.scannedRows}</p>
-            </div>
-            <div className="status">
-                <p>Emails Sent:&nbsp;</p>
-                <p className="success-count">{props.mailsSent.length}</p>
-                <img src={bar} alt="bar" />
-                <p className="error-count">{props.mailsNotSent.length}</p>
-            </div>
+          <Collapse
+            title="Files Converted"
+            success={data.filesConverted.length}
+            error={data.filesNotConverted.length}
+          />
+          <Collapse
+            title="Emails Sent"
+            success={data.mailsSent.length}
+            error={data.mailsNotSent.length}
+          />
+          <Collapse
+            title="Total Rows"
+            success={data.totalRows}
+            error={data.scannedRows}
+          />
         </div>
-  </div>)
-}
+      </div>
+    </>
+  );
+};
 
 export default Logs;
