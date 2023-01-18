@@ -14,8 +14,8 @@ const Dropzone = () => {
   const [isConverted, setIsConverted] = useState(false);
   const [conversionInProcess, setConversionInProcess] = useState(false);
   const [sendMail, setSendMail] = useState(false);
-  const [filesConverted, setFilesConverted] = useState([1, 2, 4]);
-  const [filesNotConverted, setFilesNotConverted] = useState([3, 5]);
+  const [filesConverted, setFilesConverted] = useState([]);
+  const [filesNotConverted, setFilesNotConverted] = useState([]);
   const [mailsSent, setMailsSent] = useState([]);
   const [mailsNotSent, setMailsNotSent] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
@@ -220,7 +220,7 @@ const Dropzone = () => {
             ) : null}
           </div>
           <div className="display-logs-container">
-            {isConverted && !conversionInProcess ? (
+            {isConverted && conversionInProcess ? (
               <>
                 <Link
                   className="logs-btn"
