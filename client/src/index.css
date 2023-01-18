@@ -340,18 +340,11 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-  .navbar {
-    height: 120px;
+  .navbar nav .logo {
+    min-width: 80px;
   }
 
-  .navbar nav {
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-
-  .dropzone {
-    height: calc(100vh - 120px);
+  .navbar nav h1 {
+    font-size: 1rem;
   }
 }
