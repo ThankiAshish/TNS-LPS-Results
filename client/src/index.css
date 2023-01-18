@@ -30,7 +30,7 @@ body {
 }
 
 .wrapper {
-  width: 90%;
+  width: 80%;
   margin: auto;
 }
 
@@ -93,12 +93,16 @@ body {
   justify-content: space-between;
   height: 100px;
   width: 100%;
-  font-size: 1.2rem;
+}
+
+.navbar nav h1 {
+  font-size: 1.3rem;
   font-weight: 800;
 }
 
 .navbar nav .logo {
-  width: 6em;
+  width: 9vw;
+  min-width: 100px;
   align-self: center;
 }
 
@@ -117,8 +121,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  width: 90%;
-  height: 90%;
+  width: 80%;
+  height: 80%;
   margin: auto;
   outline: 2px dashed var(--text);
   border-radius: 4px;
@@ -333,4 +337,21 @@ body {
   height: auto;
   max-height: 9999px;
   transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+@media screen and (max-width: 600px) {
+  .navbar {
+    height: 120px;
+  }
+
+  .navbar nav {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .dropzone {
+    height: calc(100vh - 120px);
+  }
 }

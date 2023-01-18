@@ -220,7 +220,7 @@ const Dropzone = () => {
             ) : null}
           </div>
           <div className="display-logs-container">
-            {true ? (
+            {isConverted && !conversionInProcess ? (
               <>
                 <Link
                   className="logs-btn"
@@ -235,11 +235,11 @@ const Dropzone = () => {
                   }}>
                   See Logs
                 </Link>
+                <button className="btn btn-danger" onClick={() => reset()}>
+                  Reset
+                </button>
               </>
             ) : null}
-            <button className="btn btn-danger" onClick={() => reset()}>
-              Reset
-            </button>
           </div>
         </div>
       </div>
