@@ -25,6 +25,17 @@ const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
+process.on('uncaughtException', (error)  => {
+  console.log('Uncaught Exception...: ',  error);
+  process.exit(1);
+
+})
+
+process.on('unhandledRejection', (error, promise) => {
+  console.log(' Promise Rejection Unhandled: ', promise);
+  console.log(' The error was: ', error );
+});
+
 app.get("/", (req, res) => {
   console.log("API is Running!");
 });
@@ -68,7 +79,6 @@ app.post("/convert", async (req, res) => {
     const page = await browser.newPage();
 
     await page.goto(url, { waitUntil: "networkidle2" });
-    // Set timeout
 
     await page.pdf({
       path: `./PDFs/${fileName}`,
@@ -82,6 +92,7 @@ app.post("/convert", async (req, res) => {
         left: "0.55in",
         right: "0.55in",
       },
+      timeout: 60000,
     });
 
     await browser.close();
@@ -128,6 +139,9 @@ app.post("/convert", async (req, res) => {
       } catch (err) {
         console.log(err);
         filesNotConverted.push(data.global_id);
+        if(flag) {
+          mailsNotSent.push(data.email + '->' + fileName);
+        }
       }
     }
   }

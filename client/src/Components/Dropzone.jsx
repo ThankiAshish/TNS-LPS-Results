@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 import csvIcon from "../Assets/csv_icon.png";
-
+//Reset fetch req
 const Dropzone = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [fileStatus, setFileStatus] = useState("No File Chosen!");
