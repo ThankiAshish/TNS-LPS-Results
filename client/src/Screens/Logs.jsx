@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 import Collapse from "../Components/Collapse";
 import Navbar from "../Components/Navbar";
@@ -7,10 +6,17 @@ import Navbar from "../Components/Navbar";
 import success from "../Assets/success.png";
 import error from "../Assets/error.png";
 
-const Logs = () => {
-  const location = useLocation();
-  const data = location.state;
+import { ContextState } from "../Context/ContextProvider.jsx";
 
+const Logs = () => {
+  const {
+    filesConverted,
+    filesNotConverted,
+    mailsSent,
+    mailsNotSent,
+    totalRows,
+    scannedRows,
+  } = ContextState();
   return (
     <>
       <Navbar />
@@ -25,18 +31,18 @@ const Logs = () => {
         <div className="status-container">
           <Collapse
             title="Files Converted"
-            success={data.filesConverted}
-            error={data.filesNotConverted}
+            success={filesConverted}
+            error={filesNotConverted}
           />
           <Collapse
             title="Emails Sent"
-            success={data.mailsSent}
-            error={data.mailsNotSent}
+            success={mailsSent}
+            error={mailsNotSent}
           />
           <Collapse
             title="Total Rows Scanned"
-            success={data.totalRows}
-            error={data.scannedRows}
+            success={scannedRows}
+            error={totalRows - scannedRows}
           />
         </div>
       </div>
