@@ -121,27 +121,28 @@ app.post("/convert", async (req, res) => {
           }) 
           .catch(e => {
             console.log(e);
-            mailsNotSent.push(data.email + '->' + fileName);
-            res.json({
-              status: "error",
-              message: "Something Went Wrong!",
-              filesOk: filesConverted,
-              filesNotOk: filesNotConverted,
-              mailsOk: mailsSent,
-              mailsNotOk: mailsNotSent,
-              totalRows: jsonData.length,
-              scannedRows: file_count,
-            })
+            mailsNotSent.push(data.email + '->' + fileName)
           });
         }
         filesConverted.push(data.global_id);
         file_count++;
       } catch (err) {
-        console.log(err);
+        console.log("here", err);
         filesNotConverted.push(data.global_id);
         if(flag) {
           mailsNotSent.push(data.email + '->' + fileName);
         }
+
+        res.json({
+          status: "error",
+          message: "Something Went Wrong!",
+          filesOk: filesConverted,
+          filesNotOk: filesNotConverted,
+          mailsOk: mailsSent,
+          mailsNotOk: mailsNotSent,
+          totalRows: jsonData.length,
+          scannedRows: file_count,
+        })
       }
     }
   }
@@ -169,9 +170,6 @@ app.get("/download", async (req, res) => {
   zip.writeZip(__dirname + "/" + "zip" + "/" + fileName, (err) => {
     if (err) console.log(err);
   });
-
-  bulkDelete(__dirname, "/PDFs");
-  deleteFile(__dirname, "/Data/Data.csv");
 
   return res.download(`./zip/Results.zip`);
 });
