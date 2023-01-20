@@ -171,9 +171,6 @@ app.get("/download", async (req, res) => {
     if (err) console.log(err);
   });
 
-  bulkDelete(__dirname, "/PDFs");
-  deleteFile(__dirname, "/Data/Data.csv");
-
   return res.download(`./zip/Results.zip`);
 });
 
