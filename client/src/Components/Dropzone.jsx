@@ -1,28 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
 
+import { ContextState } from "../Context/ContextProvider.jsx";
+
 import csvIcon from "../Assets/csv_icon.png";
 //Reset fetch req
 const Dropzone = () => {
-  const [isSelected, setIsSelected] = useState(false);
-  const [fileStatus, setFileStatus] = useState("No File Chosen!");
-  const [file, setFile] = useState({});
-  const [isUploaded, setIsUploaded] = useState(false);
-  const [isConverted, setIsConverted] = useState(false);
-  const [conversionInProcess, setConversionInProcess] = useState(false);
-  const [sendMail, setSendMail] = useState(false);
-  const [filesConverted, setFilesConverted] = useState([]);
-  const [filesNotConverted, setFilesNotConverted] = useState([]);
-  const [mailsSent, setMailsSent] = useState([]);
-  const [mailsNotSent, setMailsNotSent] = useState([]);
-  const [totalRows, setTotalRows] = useState(0);
-  const [scannedRows, setScannedRows] = useState(0);
-
+  const {
+    isSelected,
+    setIsSelected,
+    fileStatus,
+    setFileStatus,
+    file,
+    setFile,
+    isUploaded,
+    setIsUploaded,
+    isConverted,
+    setIsConverted,
+    conversionInProcess,
+    setConversionInProcess,
+    sendMail,
+    setSendMail,
+    filesConverted,
+    setFilesConverted,
+    filesNotConverted,
+    setFilesNotConverted,
+    mailsSent,
+    setMailsSent,
+    mailsNotSent,
+    setMailsNotSent,
+    totalRows,
+    setTotalRows,
+    scannedRows,
+    setScannedRows,
+  } = ContextState();
   const reset = () => {
-    window.location.reload();
+    fetch("/reset")
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   const checkHandler = () => {
