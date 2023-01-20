@@ -7,14 +7,18 @@ import "./index.css";
 import Home from "./Screens/Home";
 import Logs from "./Screens/Logs";
 
+import ContextProvider from "./Context/ContextProvider";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route path="/logs" element={<Logs />} />
-      </Routes>
-    </BrowserRouter>
+    <ContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/logs" element={<Logs />} />
+        </Routes>
+      </BrowserRouter>
+    </ContextProvider>
   </React.StrictMode>
 );
